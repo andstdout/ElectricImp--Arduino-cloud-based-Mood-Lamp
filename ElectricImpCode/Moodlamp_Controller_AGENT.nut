@@ -10,7 +10,7 @@ satA <- 0; //saturation
 redA <- 0; //RGB red
 greenA <- 0; //RGB green
 blueA <- 0; //RGB blue
-tempAlarmA <- 1 //set temperature alarm
+tempAlarmA <- 1; //Set temperature alarm
 faderA <- 0; //currently not used
 local fuel; //fuel points from Nike.com
 local fuelDailyGoal; //fuel goal
@@ -104,7 +104,7 @@ http.onrequest(function(request, response) { //read incoming data from agent.ele
     if ("readbr" in q) {response.send(200, briA);}
     if ("readphsync" in q) {response.send(200, pHueASync);}
     if ("readphbulb" in q) {local name = getPhilipsHueColor(pHueABulb);response.send(200, pHueABulb + ", " + name);}
-     device.send("MoodComTrigger" , 1); //Trigger device function "MoodComTrigger"
+    // device.send("MoodComTrigger" , 1); //Trigger device function "MoodComTrigger"
 });
 
 //Functions:
@@ -158,7 +158,7 @@ function getPhilipsHueBulbName(){ //How many lightbulbs we have and collect name
 }
 
 function getWeather(){
-    if (tempAlarmA == 1){
+    if (tempAlarmA == 1 || tempAlarmA == "1"){
     local httpgetweather = http.get("http://api.openweathermap.org/data/2.5/weather?q="+ weathercity +"&mode=json&units=metric",
         {
         "Content-Type": "text/xml"       
@@ -171,17 +171,16 @@ function getWeather(){
     server.log("Current temperature: "+ temperature + "C");
     server.log("Current condition: "+condition);
     device.send("TemperatureDev", temperature);
-    imp.wakeup(10, getWeather);
     }
+    imp.wakeup(120, getWeather);
 }
 
 function pHueSync(){
-    imp.wakeup(3, pHueSync);
+    imp.wakeup(0.01, pHueSync);
     if (pHueASyncBusy == 0 && pHueASync == "1"){
         getPhilipsHueColor(pHueABulb);
         device.send("PHueXyDev", phColor);
         device.send("PHueBriDev", phBrightness.tointeger());
-        device.send("MoodComTrigger" , 1); //Trigger function MoodComTrigger
     };
 };
 pHueSync();

@@ -1,11 +1,9 @@
-// UART Read Example
- 
-// configure a pin pair for UART TX/RX
+//Device Code
 local rgbHex = format("%07d", 0); //RGB HEX
 local red = format("%03d", 0); //RGB red
 local green = format("%03d", 0); //RGB green
 local blue = format("%03d", 0); //RGB blue
-local tempAlarm = 1; //temperature alarm set?
+local tempAlarm = 1; //temperature alarm
 local fader = format("%03d", 0); //RGB brightness fader
 local moodProt = 0; //Moodlamp Arduino <-> IMP Protocol definition
 local hue = format("%03d", 0); //HSB hue
@@ -21,6 +19,8 @@ local readSerialBlocked = 0; //Block interval SerialReading, when we request som
 local phColorX = format("%06d",0);
 local phColorY = format("%06d",0);
 local phBri = format ("%03d",0);
+debugMessage <- 0 //true/false 1,0;
+showMemory <- 1 //true/false 1,0;
 phSync <- 0;
 serialMessage <- "";
 moodComBlocked <- 0;
@@ -60,7 +60,6 @@ agent.on("BlueDev", function(msg) {
 
 agent.on("TempAlarmDev", function(msg) {
   tempAlarm = msg;
-  server.log(tempAlarm);
 });
 
 agent.on("FaderDev", function(msg) {
@@ -109,8 +108,6 @@ agent.on("FuelDailyGoalDev", function(fuelDailyGoalMsg) {
     } else if (fuelDailyGoalMsg < 1000){
     fuelDailyGoal = format("%04d", fuelDailyGoalMsg);
     }
-    server.log(fuel);
-    server.log(fuelDailyGoal);
 });
 
 agent.on("TemperatureDev", function(tempMsg) {
@@ -123,8 +120,6 @@ agent.on("TemperatureDev", function(tempMsg) {
     } else if (tempMsg < -10){
         temperature = format("%02.1f",tempMsg);
     }
-    server.log(temperature);
-    //MoodCom();
 });
 
 agent.on("PHueXyDev", function(msg) {
@@ -149,80 +144,59 @@ agent.on("PHueSyncDev", function(msg) {
     phSync = msg;
 });
 
-agent.on("MoodComTrigger", function(msg) {
-    moodComBlocked = 1;
-    MoodCom();
-    moodComBlocked = 0;
-    
-});
-
 function MoodCom()  //Here we built the communication protocol
 {
     // String Length = 62 Chars;
     moodProt = ("ia" + red + green + blue + rgbHex + hue + sat + bri + fader + tempAlarm + fuel + fuelDailyGoal + temperature + phColorX + phColorY + phBri + phSync + "e" + "\n");
     //server.log(moodProt.len()); //show string.length
     if (moodProt.len() == 62){
-    server.log (moodProt);
-    server.show (moodProt);
+    if (debugMessage == 1){ server.log("Moodcom Message: " + moodProt)};
     WriteSerial();
     fuel = format("%04d", 0);
     fuelDailyGoal= format("%04d", 0);
     } else{
-        server.log("Error! IMP-Arduino Protocol has wrong length, must be 47 Characters including lf:");
-        server.log(moodProt);
-        server.log(moodProt.len())
+        if (debugMessage == 1){ server.log("Error! IMP-Arduino Protocol has wrong length, must be 47 Characters including lf:")};
+        if (debugMessage == 1){ server.log(moodProt)};
+        if (debugMessage == 1){ server.log(moodProt.len())};
         moodProt = 0;
     }
    moodProt = 0;
-   if (moodComBlocked == 0){
-       server.log("MoodCom Automatic Mode")
-        imp.wakeup(5, MoodCom);
-    }
+   imp.wakeup(0.1, MoodCom);
 }
 
 function WriteSerial() {
     hardware.uart57.write(moodProt);
-    readSerialBlocked = 1;
-    ReadSerial();
-    readSerialBlocked = 0;
-  
+    if (debugMessage == 1){ ReadSerial()}; 
 }
  
 function ReadSerial()
 {    
-     serialMessage = "";
-        local byte = hardware.uart57.read();    
+        serialMessage = "";
+        local byte = hardware.uart57.read(); 
         while (byte != -1)
          {
            serialMessage+=byte.tochar();  
            byte = hardware.uart57.read(); 
               if (byte.tochar() == "\n")
              {   
-                    stringComplete = 1;
+                    server.log ("Serial Message from Arduino: " + serialMessage);
+                    serialMessage = "";
                 }
            }
-      if (stringComplete == 1) // replace with whatever validation you are using
-        {  
-            //impeeOutput.set(s);
-            server.show("From Arduino: " + serialMessage);
-            server.log("From Arduino: " + serialMessage)
-          if (serialMessage == "aiRETRYe\n"){
-             server.log("Error in serial message, retry")
-             MoodCom();
-            }
-            stringComplete = 0;
-          }
-         //serialMessage = "";
-    if (readSerialBlocked == 0){
-        imp.wakeup(0.2, ReadSerial);
-    }
-    serialMessage = "";
+}
+function MemoryConsumption(){
+if (showMemory == 1){
+    local freemem = imp.getmemoryfree();
+    server.log("Device Moodlamp Controller: free memory: "+freemem);
+    imp.wakeup(2,MemoryConsumption);
+}
 }
 
 imp.configure("Moodlamp Controller", [], []);
 InitUart();
-ReadSerial();
+//ReadSerial();
 MoodCom();
+MemoryConsumption();
 
 //DEVICE CODE END
 
