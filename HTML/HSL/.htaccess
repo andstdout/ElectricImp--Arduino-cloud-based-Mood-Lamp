@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "Please provide credentials"
+AuthUserFile /var/www/.htuser
+Require valid-user
