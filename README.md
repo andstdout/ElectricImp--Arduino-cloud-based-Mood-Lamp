@@ -1,4 +1,4 @@
-ElectricImp--Arduino-cloud-based-Mood-Lamp
+ElectricImp/Arduino cloud based Moodlamp
 ==========================================
 
 ElectricImp/ Arduino is a cloud based high power rgb led moodlamp which displays actual local temperature,
