@@ -1,61 +1,56 @@
 {
 	"orientation": "portrait",
 	"pagebuttonwidth": "static",
-	"navigation": "fixed",
-	"description": "High power RGB Moodlamp Controller",
+	"type": "NetIOConfiguration",
+	"name": "Moodlamp Controller",
 	"connections": [
 		{
-			"host": "agent.electricimp.com",
-			"format": "string",
+			"port": 80,
+			"host": "api.electricimp.com",
 			"protocol": "http",
-			"name": "ElectricImpAgent",
-			"port": 80
+			"name": "ElectricImpRGB",
+			"format": "string"
 		},
 		{
-			"host": "yourwebserver",
-			"format": "string",
+			"port": 80,
+			"host": "agent.electricimp.com",
 			"protocol": "http",
-			"name": "Webserver",
-			"port": 80
+			"name": "ElectricImpAgent",
+			"format": "string"
+		},
+		{
+			"port": 80,
+			"host": "webserver.com",
+			"protocol": "http",
+			"name": "YourWebserver",
+			"format": "string"
 		}
 	],
 	"version": 1.3,
 	"device": "iPhone 5",
-	"type": "NetIOConfiguration",
+	"navigation": "fixed",
 	"pages": [
 		{
 			"sound": "active",
 			"name": "hue",
 			"items": [
 				{
-					"username": "username",
-					"scrollable": false,
-					"reloadButton": false,
-					"url": "http://webserver.com/HSL/hue.php",
-					"top": 30,
-					"height": 50,
-					"width": 320,
-					"password": "password",
-					"type": "webview",
-					"left": 0
-				},
-				{
-					"icon": "lamp_off",
 					"sends": [
 						"/IMPAPI/?bri=0"
 					],
-					"top": 260,
-					"connection": "ElectricImpAgent",
+					"top": 280,
+					"shape": "rounded",
 					"height": 50,
 					"width": 60,
-					"shape": "rounded",
+					"connection": "ElectricImpAgent",
+					"left": 240,
 					"label": "WhiteOff",
 					"type": "button",
-					"left": 240
+					"icon": "lamp_off"
 				},
 				{
 					"text": "Hue:",
-					"top": 10,
+					"top": 0,
 					"height": 20,
 					"width": 160,
 					"type": "label",
@@ -67,7 +62,7 @@
 					"scrollable": false,
 					"reloadButton": false,
 					"url": "http://webserver.com/HSL/saturation.php",
-					"top": 110,
+					"top": 100,
 					"height": 50,
 					"width": 320,
 					"password": "password",
@@ -79,7 +74,7 @@
 					"scrollable": false,
 					"reloadButton": false,
 					"url": "http://webserver.com/HSL/brightness.php",
-					"top": 190,
+					"top": 180,
 					"height": 50,
 					"width": 320,
 					"password": "password",
@@ -88,7 +83,7 @@
 				},
 				{
 					"text": "Saturation:",
-					"top": 90,
+					"top": 80,
 					"height": 20,
 					"width": 160,
 					"type": "label",
@@ -97,7 +92,7 @@
 				},
 				{
 					"text": "Brightness:",
-					"top": 170,
+					"top": 160,
 					"height": 20,
 					"width": 160,
 					"type": "label",
@@ -105,112 +100,160 @@
 					"left": 10
 				},
 				{
-					"icon": "lamp_on",
 					"sends": [
 						"/IMPAPI/?bri=255",
 						"/IMPAPI/?sat=0"
 					],
-					"top": 260,
-					"connection": "ElectricImpAgent",
+					"top": 280,
+					"shape": "rounded",
 					"height": 50,
 					"width": 60,
-					"shape": "rounded",
+					"connection": "ElectricImpAgent",
+					"left": 20,
 					"label": "WhiteOn",
 					"type": "button",
-					"left": 20
+					"icon": "lamp_on"
 				},
 				{
-					"icon": "red",
 					"sends": [
 						"/IMPAPI/?hue=359&sat=255&bri=255"
 					],
-					"top": 320,
-					"connection": "ElectricImpAgent",
+					"top": 340,
+					"shape": "rounded",
 					"height": 50,
 					"width": 60,
-					"shape": "rounded",
+					"connection": "ElectricImpAgent",
+					"left": 20,
 					"label": "RedOn",
 					"type": "button",
-					"left": 20
+					"icon": "red"
 				},
 				{
-					"icon": "green",
 					"sends": [
 						"/IMPAPI/?hue=120&sat=255&bri=255"
 					],
-					"top": 320,
-					"connection": "ElectricImpAgent",
+					"top": 340,
+					"shape": "rounded",
 					"height": 50,
 					"width": 60,
-					"shape": "rounded",
+					"connection": "ElectricImpAgent",
+					"left": 130,
 					"label": "GreenOn",
 					"type": "button",
-					"left": 130
+					"icon": "green"
 				},
 				{
-					"icon": "blue",
 					"sends": [
 						"/IMPAPI/?hue=240&sat=255&bri=255"
 					],
-					"top": 320,
-					"connection": "ElectricImpAgent",
+					"top": 340,
+					"shape": "rounded",
 					"height": 50,
 					"width": 60,
-					"shape": "rounded",
+					"connection": "ElectricImpAgent",
+					"left": 240,
 					"label": "BlueOn",
 					"type": "button",
-					"left": 240
+					"icon": "blue"
 				},
 				{
 					"sends": [
 						"/IMPAPI/?getfuel"
 					],
-					"top": 410,
-					"connection": "ElectricImpAgent",
+					"top": 430,
+					"shape": "rounded",
 					"height": 40,
 					"width": 100,
-					"shape": "rounded",
+					"connection": "ElectricImpAgent",
 					"fontsize": 9,
 					"background": "15,58,212",
 					"label": "Check Fuel",
 					"type": "button",
-					"left": 200
+					"left": 220
 				},
 				{
 					"offSend": "/IMPAPI/?tempalarm=0",
-					"textcolor": "0,255,0",
-					"connection": "ElectricImpAgent",
-					"top": 410,
+					"top": 430,
 					"interval": 7000,
 					"offText": "Off",
+					"reads": "/IMPAPI/?readt",
 					"height": 40,
 					"width": 100,
-					"reads": "/IMPAPI/?readt",
+					"connection": "ElectricImpAgent",
 					"fontsize": 1,
 					"onValue": "1",
 					"offtextcolor": "255,0,0",
 					"onText": "On",
-					"onSend": "/IMPAPI/?tempalarm=1",
+					"textcolor": "0,255,0",
 					"type": "switch",
-					"left": 20
+					"onSend": "/IMPAPI/?tempalarm=1",
+					"left": 0
 				},
 				{
 					"text": "Temperature alarm",
-					"top": 390,
+					"top": 410,
 					"height": 20,
 					"width": 100,
 					"fontsize": 9,
 					"type": "label",
-					"left": 20
+					"left": 0
 				},
 				{
 					"text": "Check actual Nike Fuel",
-					"top": 390,
+					"top": 410,
 					"height": 20,
 					"width": 100,
 					"fontsize": 9,
 					"type": "label",
-					"left": 200
+					"left": 220
+				},
+				{
+					"username": "username",
+					"scrollable": false,
+					"reloadButton": false,
+					"url": "http://webserver.com/HSL/hue.php",
+					"top": 20,
+					"height": 50,
+					"width": 320,
+					"password": "password",
+					"type": "webview",
+					"left": 0
+				},
+				{
+					"offSend": "/IMPAPI/?tempalarm=1",
+					"top": 430,
+					"interval": 7000,
+					"offText": "Off",
+					"reads": "/IMPAPI/?readt",
+					"height": 40,
+					"width": 100,
+					"connection": "ElectricImpAgent",
+					"fontsize": 1,
+					"onValue": "2",
+					"offtextcolor": "255,0,0",
+					"onText": "On",
+					"textcolor": "0,255,0",
+					"type": "switch",
+					"onSend": "/IMPAPI/?tempalarm=2",
+					"left": 110
+				},
+				{
+					"text": "Temperature fix",
+					"top": 410,
+					"height": 20,
+					"width": 100,
+					"fontsize": 9,
+					"type": "label",
+					"left": 110
+				},
+				{
+					"scrollable": false,
+					"url": "https://agent.electricimp.com/IMPAPI/?getweather",
+					"top": 230,
+					"height": 50,
+					"width": 300,
+					"type": "webview",
+					"left": 10
 				}
 			],
 			"label": "HUE/HSB",
@@ -220,97 +263,123 @@
 		},
 		{
 			"name": "rgb",
+			"fitToScreen": true,
+			"height": 568,
+			"width": 320,
+			"connection": "ElectricImpRGB",
 			"items": [
 				{
-					"showValue": true,
-					"requiresSendReponse": false,
-					"top": 230,
-					"interval": 2500,
-					"maxValue": 255,
-					"reads": "/IMPAPI/?readr",
-					"minValue": 0,
-					"width": 290,
-					"connection": "ElectricImpAgent",
 					"textcolor": "255,0,0",
-					"release": "/IMPAPI/?red={value}",
-					"height": 40,
-					"type": "slider",
-					"left": 20
-				},
-				{
-					"showValue": true,
 					"requiresSendReponse": false,
+					"connection": "ElectricImpAgent",
 					"top": 330,
 					"interval": 2500,
 					"maxValue": 255,
-					"reads": "/IMPAPI/?readb",
 					"minValue": 0,
-					"width": 290,
-					"connection": "ElectricImpAgent",
-					"textcolor": "0,0,255",
-					"release": "/IMPAPI/?blue={value}",
 					"height": 40,
+					"width": 290,
+					"reads": "/IMPAPI/?readr",
+					"release": "/IMPAPI/?red={value}",
+					"showValue": true,
 					"type": "slider",
 					"left": 20
 				},
 				{
-					"showValue": true,
+					"textcolor": "0,0,255",
 					"requiresSendReponse": false,
-					"top": 280,
+					"connection": "ElectricImpAgent",
+					"top": 430,
 					"interval": 2500,
 					"maxValue": 255,
-					"reads": "/IMPAPI/?readg",
 					"minValue": 0,
-					"width": 290,
-					"connection": "ElectricImpAgent",
-					"textcolor": "0,255,0",
-					"release": "/IMPAPI/?green={value}",
 					"height": 40,
+					"width": 290,
+					"reads": "/IMPAPI/?readb",
+					"release": "/IMPAPI/?blue={value}",
+					"showValue": true,
 					"type": "slider",
 					"left": 20
 				},
 				{
-					"icon": "lamp_on",
+					"textcolor": "0,255,0",
+					"requiresSendReponse": false,
+					"connection": "ElectricImpAgent",
+					"top": 380,
+					"interval": 2500,
+					"maxValue": 255,
+					"minValue": 0,
+					"height": 40,
+					"width": 290,
+					"reads": "/IMPAPI/?readg",
+					"release": "/IMPAPI/?green={value}",
+					"showValue": true,
+					"type": "slider",
+					"left": 20
+				},
+				{
 					"sends": [
 						"/IMPAPI/?red=255&green=255&blue=255"
 					],
 					"top": 40,
-					"connection": "ElectricImpAgent",
+					"shape": "rounded",
 					"height": 50,
 					"width": 60,
-					"shape": "rounded",
+					"connection": "ElectricImpAgent",
+					"left": 20,
 					"label": "WhiteOn",
 					"type": "button",
-					"left": 20
+					"icon": "lamp_on"
 				},
 				{
-					"icon": "lamp_off",
 					"sends": [
 						"/IMPAPI/?red=0&green=0&blue=0"
 					],
 					"top": 40,
-					"connection": "ElectricImpAgent",
+					"shape": "rounded",
 					"height": 50,
 					"width": 60,
-					"shape": "rounded",
+					"connection": "ElectricImpAgent",
+					"left": 100,
 					"label": "WhiteOff",
 					"type": "button",
-					"left": 100
+					"icon": "lamp_off"
+				},
+				{
+					"offSend": "/IMPAPI/?crossfade=0",
+					"top": 170,
+					"offText": "Off",
+					"reads": "/IMPAPI/?readc",
+					"height": 40,
+					"width": 100,
+					"connection": "ElectricImpAgent",
+					"fontsize": 1,
+					"onValue": "1",
+					"offtextcolor": "255,0,0",
+					"onText": "On",
+					"textcolor": "0,255,0",
+					"type": "switch",
+					"onSend": "/IMPAPI/?crossfade=1",
+					"left": 20
 				},
 				{
 					"text": "RGB:",
-					"top": 200,
+					"top": 300,
 					"height": 20,
 					"width": 70,
 					"type": "label",
 					"textalign": "left",
 					"left": 20
+				},
+				{
+					"text": "Crossfade:",
+					"top": 140,
+					"height": 20,
+					"width": 100,
+					"type": "label",
+					"textalign": "left",
+					"left": 20
 				}
 			],
-			"height": 568,
-			"width": 320,
-			"connection": "ElectricImpRGB",
-			"fitToScreen": true,
 			"sounds": "keyboardsetting",
 			"label": "RGB"
 		},
@@ -319,30 +388,32 @@
 			"name": "Philips",
 			"items": [
 				{
+					"username": "username",
 					"url": "http://webserver.com/HSL/phue.php/getbulbs",
 					"top": 120,
 					"height": 50,
 					"width": 280,
+					"password": "password",
 					"type": "webview",
 					"left": 10
 				},
 				{
 					"offSend": "/IMPAPI/?setphsync=0",
-					"textcolor": "0,255,0",
-					"connection": "ElectricImpAgent",
 					"top": 230,
 					"interval": 5555,
 					"offText": "Off",
+					"reads": "/IMPAPI/?readphsync",
 					"height": 30,
 					"width": 70,
-					"reads": "/IMPAPI/?readphsync",
+					"connection": "ElectricImpAgent",
 					"fontsize": 1,
 					"onValue": "1",
 					"offValue": "0",
 					"offtextcolor": "255,0,0",
 					"onText": "On",
-					"onSend": "/IMPAPI/?setphsync=1",
+					"textcolor": "0,255,0",
 					"type": "switch",
+					"onSend": "/IMPAPI/?setphsync=1",
 					"left": 30
 				},
 				{
@@ -350,10 +421,10 @@
 					"text": "Refreshing...",
 					"top": 30,
 					"interval": 10000,
-					"reads": "/IMPAPI/?readphbulb",
+					"connection": "ElectricImpAgent",
 					"height": 80,
 					"width": 270,
-					"connection": "ElectricImpAgent",
+					"reads": "/IMPAPI/?readphbulb",
 					"type": "label",
 					"textalign": "left",
 					"left": 20
@@ -370,9 +441,9 @@
 			],
 			"label": "Philips",
 			"width": 320,
-			"connection": "ElectricImpAgent",
+			"connection": "YourWebserver",
 			"height": 568
 		}
 	],
-	"name": "ElectricImp Moodlamp"
+	"description": "High power RGB Moodlamp Controller"
 }

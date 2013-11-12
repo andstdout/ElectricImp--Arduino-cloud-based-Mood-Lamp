@@ -19,7 +19,7 @@ local condition; //condition from openweathermap.org
 local phColor; //Philips hue color variable
 phBrightness <- ""; //Philips hue brightness
 pHueABulb <- 1; //Set PhilipsHue default to bulb no. 1
-pHueASync <- "0"; //Boolean variable; sync Philips Hue with moodlamp? 
+pHueASync <- 0; //Boolean variable; sync Philips Hue with moodlamp? 
 pHueASyncBusy <- 0; //Helper variable
 
 http.onrequest(function(request, response) { //read incoming data from agent.electricimp.com/yourapikey/*
@@ -87,7 +87,7 @@ http.onrequest(function(request, response) { //read incoming data from agent.ele
     if ("setphsync" in q){
         pHueASync = q.setphsync;
         response.send(200,pHueASync);
-        if (pHueASync == "1"){
+        if (pHueASync == "1" || pHueASync == 1){
             server.log("PhilipsHue sync active!");
         };
         device.send("PHueSyncDev", pHueASync.tointeger());
@@ -112,7 +112,7 @@ http.onrequest(function(request, response) { //read incoming data from agent.ele
 
 function getFuel(){ //get the actual nike fuel points from getFuel.php
     //imp.wakeup(5, getFuel);
-local httpgetfuel = http.get(webserver + "HSL/Fuelband/getFuel.php",
+local httpgetfuel = http.get(webserver + "/HSL/Fuelband/getFuel.php",
         {
         "Content-Type": "text/xml",
         "Authorization": "Basic" + webserverAuth      
@@ -158,7 +158,6 @@ function getPhilipsHueBulbName(){ //How many lightbulbs we have and collect name
 }
 
 function getWeather(){
-    if (tempAlarmA == 1 || tempAlarmA == "1"){
     local httpgetweather = http.get("http://api.openweathermap.org/data/2.5/weather?q="+ weathercity +"&mode=json&units=metric",
         {
         "Content-Type": "text/xml"       
@@ -171,7 +170,6 @@ function getWeather(){
     server.log("Current temperature: "+ temperature + "C");
     server.log("Current condition: "+condition);
     device.send("TemperatureDev", temperature);
-    }
     imp.wakeup(120, getWeather);
 }
 

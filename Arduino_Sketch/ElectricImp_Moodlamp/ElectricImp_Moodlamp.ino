@@ -28,7 +28,7 @@ Philips Hue color conversion <https://github.com/PhilipsHue/PhilipsHueSDKiOS/blo
 
 //CUSTOM Settings:
 int tempAlarm = 3; // hysteresis for temperature changes
-boolean debugLocal = true; //serial print debugging. Function "printd" and "printDln"
+boolean debugLocal = false; //serial print debugging. Function "printd" and "printDln"
 boolean debugImp = false; // send all serial print debug messages to electric imp. Function "printd" and "printDln"
 boolean VirtualColorMixer = false; //Processing; VirtualColorMixer, have a look at Arduino Examples -> Commuincation -> VirtualColorMixer(Virtual RGB)
 const int ledPinR   = 11;  // pwm pin with red led
@@ -63,8 +63,8 @@ void setup()
     debugLocal = false;
     debugImp = false;
   }
-  impSerial.write("aiRETRYe\n"); //request the last string from ElectricImp
-  delay(500);
+  //impSerial.write("aiRETRYe\n"); //request the last string from ElectricImp
+  //delay(500);
 }
 
 void loop()

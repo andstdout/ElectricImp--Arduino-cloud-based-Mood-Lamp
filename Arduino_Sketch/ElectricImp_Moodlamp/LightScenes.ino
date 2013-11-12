@@ -88,29 +88,21 @@ void nikeFuel(int fuelToday, int fuelGoal, int hue, int brightness, int sat){
   }
 }
 
-void weather(int temperature, int hue, int brightness, int sat){
+void temperatureAlarm(int temperature, int hue, int brightness, int sat){
   preTemperature = temperature;
-  if  (temperature < 30 && temperature > -30){
-    temperature = map(temperature, -30, 50, 240,1); //map HSB colors to temperature
-  } 
-  else if (temperature > 30){
-    temperature = 1;
-  } 
-  else if (temperature < -30){
-    temperature = 240;
-  } 
+  temperature = mapTemperatureToHue(temperature);
   if (brightness > 0){ //dimming the actual HSB light setting to zero
     for (int i = brightness; i > 0 ; i--){
       HsbConverter(hue,i,sat); 
       delay(5);
     }
   }
-    
+
   for (int i = 0; i < 255 ; i++){ //dimming the temperature color to full brigthness
     HsbConverter(temperature,i,i);
     delay(5);
   }
-  
+
   delay(15000); 
   for (int i = 1; i < 3 ;i++){ //Blink temperature two times at the end like the NikeFuel Band
     HsbConverter(0,0,0);
@@ -124,15 +116,20 @@ void weather(int temperature, int hue, int brightness, int sat){
     for (int i = 0; i <= brightness; i++){
       HsbConverter(hue,i,sat);
       delay(5);
-    } 
+    }
   }
 }
 
-
-
-
-
-
-
-
-
+int mapTemperatureToHue(int temperature){
+  if  (temperature < 30 && temperature > -30){
+    temperature = map(temperature, -30, 50, 240,1); //map HSB colors to temperature
+  } 
+  else if (temperature > 30){
+    temperature = 1;
+  } 
+  else if (temperature < -30){
+    temperature = 240;
+  }
+  Serial.println(temperature);
+  return temperature;
+}

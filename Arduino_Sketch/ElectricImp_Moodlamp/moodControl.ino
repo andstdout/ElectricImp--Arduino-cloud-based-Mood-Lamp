@@ -60,38 +60,41 @@ void moodControl(){  // Split the serial input string from ElectricImp into grou
   float phBrifloat =StrToFloat(phBri);
 
   inputString = "";
-
-  if (brightnessint > 0){
+  if (setTempAlarm == "2"){ //temperature static overrides hue settings
+    int tempcolor = mapTemperatureToHue(temperatureint);
+    hueint = tempcolor;
+    saturationint = 255;
+  } 
+    
+  if (brightnessint > 0){ //Set color by HSB, override all other color settings if brightness is greater than zero except temperature color;
     HsbConverter(hueint,brightnessint,saturationint);
     HSBMode =true;
   } 
 
-  if (phSync == "1" && HSBMode == false){
-
+  if (phSync == "1" && HSBMode == false){ //Set color by Philips Hue
+    printDln("Philips Hue sync active!");
     xyBriToRgb(phColorXfloat,phColorYfloat,phBrifloat);
     HSBMode = false;
   } 
 
-  if (phSync == "0" && HSBMode == false){
-    printDln("Philips Hue sync active!");
+  if (phSync == "0" && HSBMode == false){ //Set color by RGB
     setLedColor(redint,greenint,blueint);
     HSBMode = false;
   }
 
-  if (fuelTodayint > 0){
+  if (fuelTodayint > 0){ //Show Fuel- status
     nikeFuel(fuelTodayint, fuelGoalint,hueint, brightnessint, saturationint);
   }
   //Temperature Alarm
-  if (setTempAlarm == "1"){
+  if (setTempAlarm == "1"){ //temperature alarm
     printDln("Temperature Alarm set!");
     if (preTemperature == 12356){
       preTemperature = temperatureint;
     }
     if (temperatureint > (preTemperature + tempAlarm) || temperatureint < (preTemperature - tempAlarm)){
-      weather(temperatureint, hueint, brightnessint,saturationint);
+      temperatureAlarm(temperatureint, hueint, brightnessint,saturationint);
     }
   }
-
   HSBMode = false;
 }
 
@@ -101,6 +104,10 @@ float StrToFloat(String str){
   str.toCharArray(carray, sizeof(carray)); //put str into an array
   return atof(carray);
 }
+
+
+
+
 
 
 
